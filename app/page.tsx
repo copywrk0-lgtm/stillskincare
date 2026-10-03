@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import Image from 'next/image';
 import type LenisType from 'lenis';
+import {cinematicMotion} from './lib/cinematic-motion';
 import {Plus,Minus,Menu,X,MoveHorizontal,Check,MessageCircle,ChevronLeft,ChevronRight} from 'lucide-react';
 const products=[
  {name:'Hydration booster',sub:'01 / THE DAILY RESET',copy:'Lightweight care. A thoughtful starting point for skin that feels thirsty, tight or out of balance.',ingredients:['Hyaluronic acid','Glycerin','Niacinamide'],image:'/images/booster.webp',ritual:'A little. Then a little more.',focus:'HYDRATE'},
@@ -15,27 +16,25 @@ const root=useRef<HTMLDivElement>(null);const [menu,setMenu]=useState(false);con
 const wa=phone?`https://wa.me/${phone.length===10?'91'+phone:phone}?text=${encodeURIComponent('Hello, I would like to discuss a skin consultation.')}`:undefined;
 useEffect(()=>{let disposed=false;const started=performance.now();const assets=[...document.querySelectorAll<HTMLImageElement>('.hero img')];Promise.all(assets.map(img=>img.complete?Promise.resolve():new Promise<void>(resolve=>{img.addEventListener('load',()=>resolve(),{once:true});img.addEventListener('error',()=>resolve(),{once:true})}))).then(()=>{const wait=Math.max(0,1500-(performance.now()-started));window.setTimeout(()=>{if(!disposed)setLoading(false)},wait)});const timeout=window.setTimeout(()=>setLoading(false),2000);return()=>{disposed=true;clearTimeout(timeout)}},[]);
 useEffect(()=>{if(loading)return;let cancelled=false;let dispose=()=>{};const initialize=async()=>{const [{gsap},{ScrollTrigger},{default:Lenis}]=await Promise.all([import('gsap'),import('gsap/ScrollTrigger'),import('lenis')]);if(cancelled)return;gsap.registerPlugin(ScrollTrigger);const mm=gsap.matchMedia();let lenis:LenisType|undefined;let tick:((time:number)=>void)|undefined;
-mm.add('(prefers-reduced-motion: no-preference)',()=>{lenis=new Lenis({duration:1.1,anchors:true});lenis.on('scroll',ScrollTrigger.update);tick=(time)=>lenis?.raf(time*1000);gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
+mm.add('(prefers-reduced-motion: no-preference)',()=>{lenis=new Lenis({duration:1.1,anchors:true,prevent:node=>!!node.closest('.modal-backdrop,.mobile-menu')});lenis.on('scroll',ScrollTrigger.update);tick=(time)=>lenis?.raf(time*1000);gsap.ticker.add(tick);gsap.ticker.lagSmoothing(0);
+let disposeMotion=()=>{};
 const ctx=gsap.context(()=>{
- gsap.fromTo('.hero-visual',{scale:1.06},{scale:1,duration:1.8,ease:'power3.out'});
+ if(root.current)disposeMotion=cinematicMotion(gsap,ScrollTrigger,root.current);
+
  gsap.to('.hero-visual',{yPercent:12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}});
  gsap.to('.hero-stay',{xPercent:-14,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}});
  ScrollTrigger.create({trigger:'.hero',start:'top top',end:'bottom top',onUpdate:self=>{const ages=[21,25,30,35,40];setHeroAge(ages[Math.min(4,Math.floor(self.progress*5))])}});
- gsap.fromTo('.skin-portal-media',{scale:1.8,filter:'blur(10px)'},{scale:.72,filter:'blur(0px)',ease:'none',scrollTrigger:{trigger:'.skin-portal',start:'top bottom',end:'center center',scrub:1}});
- gsap.fromTo('.portal-product',{scale:.12,opacity:0,rotate:-18},{scale:1,opacity:1,rotate:8,ease:'none',scrollTrigger:{trigger:'.skin-portal',start:'20% center',end:'75% center',scrub:1}});
- gsap.fromTo('.portal-copy',{opacity:0,y:35},{opacity:1,y:0,ease:'none',scrollTrigger:{trigger:'.skin-portal',start:'55% center',end:'80% center',scrub:1}});
- gsap.utils.toArray<HTMLElement>('.ingredient-scene').forEach((el,i)=>{gsap.fromTo(el.querySelector('.ingredient-ghost'),{xPercent:i%2?-15:15,opacity:.05},{xPercent:0,opacity:.18,ease:'none',scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1}})});
- 
  gsap.utils.toArray<HTMLElement>('.reveal').forEach(el=>gsap.fromTo(el,{y:30,opacity:0},{y:0,opacity:1,duration:.8,scrollTrigger:{trigger:el,start:'top 92%'}}));
  gsap.fromTo('.manifesto-word',{color:'#868075'},{color:'#171715',stagger:.15,ease:'none',scrollTrigger:{trigger:'.manifesto',start:'top 70%',end:'bottom 65%',scrub:1}});
  const age=gsap.timeline({scrollTrigger:{trigger:'.changes',start:'top top',end:'+=100%',pin:true,scrub:1,onUpdate:self=>setSkinChapter(Math.min(2,Math.floor(self.progress*3)))}});
  age.to('.aged-portrait',{clipPath:'circle(80% at 50% 48%)'},0).to('.time-portrait',{scale:1.08},0).to('.time-meter i',{scaleX:1},0);
- ScrollTrigger.create({trigger:'.science',start:'top top',end:'+=100%',pin:true,scrub:1,onUpdate:self=>setLayer(Math.min(2,Math.floor(self.progress*3)))});
- ScrollTrigger.create({trigger:'.treatment',start:'top top',end:'+=100%',pin:true,scrub:1,onUpdate:self=>setActive(Math.min(1,Math.floor(self.progress*2)))});
+ let scrollLayer=-1,scrollProduct=-1;
+ ScrollTrigger.create({trigger:'.science',start:'top top',end:'+=100%',pin:true,scrub:1,onUpdate:self=>{const next=Math.min(2,Math.floor(self.progress*3));if(next!==scrollLayer){scrollLayer=next;setLayer(next)}}});
+ ScrollTrigger.create({trigger:'.treatment',start:'top top',end:'+=100%',pin:true,scrub:1,onUpdate:self=>{const next=Math.min(1,Math.floor(self.progress*2));if(next!==scrollProduct){scrollProduct=next;setActive(next)}}});
  gsap.fromTo('.foot-word',{yPercent:20},{yPercent:-5,ease:'none',scrollTrigger:{trigger:'.cta',start:'top bottom',end:'bottom bottom',scrub:1}});
-},root);return()=>{ctx.revert();if(tick)gsap.ticker.remove(tick);lenis?.destroy()}});
+},root);return()=>{disposeMotion();ctx.revert();if(tick)gsap.ticker.remove(tick);lenis?.destroy()}});
 dispose=()=>mm.revert()};void initialize();return()=>{cancelled=true;dispose()}},[loading]);
-useEffect(()=>{const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)setNavLight(['hero','changes','results','cta'].some(c=>entry.target.classList.contains(c)))})},{rootMargin:'-1px 0px -94% 0px',threshold:0});document.querySelectorAll('main section').forEach(section=>observer.observe(section));return()=>observer.disconnect()},[]);
+useEffect(()=>{const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)setNavLight(['hero','changes','skin-portal','results','cta'].some(c=>entry.target.classList.contains(c)))})},{rootMargin:'-1px 0px -94% 0px',threshold:0});document.querySelectorAll('main section').forEach(section=>observer.observe(section));return()=>observer.disconnect()},[]);
 useEffect(()=>{if(!quiz)return;const prev=document.activeElement as HTMLElement;const dialog=document.querySelector<HTMLElement>('.quiz-dialog');dialog?.focus();const key=(e:KeyboardEvent)=>{if(e.key==='Escape')setQuiz(false);if(e.key==='Tab'){const nodes=dialog?.querySelectorAll<HTMLElement>('button,a,input');if(!nodes?.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}};document.addEventListener('keydown',key);const old=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.removeEventListener('keydown',key);document.body.style.overflow=old;prev?.focus()}},[quiz]);
 function startQuiz(){setStep(0);setAnswers([]);setQuiz(true)}
 const result=answers[2]==='Often irritated'||answers[1]==='Sensitive'?'Comfort first':answers[0]==='Uneven-looking tone'?'A thoughtful tone routine':answers[0]==='Fine lines'?'Hydration, with consistency':'Your hydration starting point';
@@ -43,10 +42,11 @@ return <div ref={root}>
 {loading&&<div className="loader" aria-label="Preparing your skin journey"><span className="loader-mark">STILL<span>.</span></span><div className="loader-rule"><i/></div><p>TAKE A MOMENT.</p></div>}
 <header className={menu?'menu-open':navLight?'nav-light':'nav-dark'}><a href="#" className="logo" aria-label="STILL· home">STILL<span>·</span></a><nav aria-label="Main navigation"><a href="#story">Our point of view</a><a href="#science">Beneath the surface</a><a href="#ritual">The collection</a></nav><div className="nav-right"><button className="nav-consult" onClick={startQuiz}>Find your ritual <Plus size={14}/></button><button className="menu-btn" onClick={()=>setMenu(!menu)} aria-label={menu?'Close menu':'Open menu'} aria-expanded={menu}>{menu?<X/>:<Menu/>}</button></div></header>
 {menu&&<nav className="mobile-menu" aria-label="Mobile navigation">{[['Our point of view','#story'],['Beneath the surface','#science'],['The collection','#ritual'],['Find your ritual','#consultation']].map(([label,href],i)=><a key={href} href={href} onClick={()=>setMenu(false)}><span>0{i+1}</span>{label}<Plus size={25}/></a>)}</nav>}
+<div className="journey-progress" aria-hidden="true"/>
 <main>
 <section className="hero" id="home">
  <div className="hero-visual"><Image src="/images/campaign.webp" alt="A chrome STILL bottle suspended in a sculptural ribbon of clear gel" fill priority sizes="100vw"/></div>
- <div className="hero-vignette"/>
+ <div className="hero-vignette"/><div className="hero-glint" aria-hidden="true"/>
  <p className="hero-intro eyebrow">PROFESSIONAL SKINCARE.<br/>DEEPLY PERSONAL.</p>
  <h1 className="hero-type"><span className="hero-stay">STAY</span><em className="hero-you">you.</em></h1>
  <div className="hero-lower"><p>Time moves.<br/>You set the terms.</p><button className="hero-quiz" onClick={startQuiz}><span>Discover your skin ritual</span><i><Plus size={25}/></i></button></div>
@@ -59,7 +59,7 @@ return <div ref={root}>
  <div className="manifesto-bottom"><span className="vertical-rule"/><p>Every late night. Every sunny afternoon.<br/>Every year of being you.</p><p>Skin changes. Our approach starts with understanding yours, then finding a ritual that belongs in your life.</p><a className="round-link" href="#science" aria-label="Explore beneath the surface"><Plus size={22}/></a></div>
 </section>
 <section className="changes" aria-label="The changing story of skin">
- <div className="time-portrait"><Image src="/images/skin.webp" fill sizes="100vw" alt="Natural skin portrait"/><div className="aged-portrait"><Image src="/images/skin-time.webp" fill sizes="100vw" alt="An illustrative older appearance of the same portrait"/></div></div><div className="time-shade"/>
+ <div className="time-portrait"><Image src="/images/skin.webp" fill sizes="100vw" alt="Natural skin portrait"/><div className="aged-portrait"><Image src="/images/skin-time.webp" fill sizes="100vw" alt="An illustrative older appearance of the same portrait"/></div></div><div className="time-shade"/><div className="time-scan" aria-hidden="true"/>
  <div className="time-top"><p className="eyebrow">02 / THE MARKS OF LIVING</p><span>YOUR SKIN HAS BEEN THERE.</span></div>
  <div className="time-copy"><h2>Life leaves<br/><em>a trace.</em></h2><p>{['A texture that changes.','A tone with its own story.','A need for a little more comfort.'][skinChapter]}</p></div>
  <div className="time-bottom"><div className="time-chapters">{['Texture','Tone','Comfort'].map((c,i)=><span key={c} className={skinChapter===i?'active':''}>0{i+1} / {c}</span>)}<div className="time-meter"><i/></div></div><p className="small">Illustrative ageing portrait.<br/>Not a treatment result or prediction.</p></div>
@@ -71,7 +71,7 @@ return <div ref={root}>
 </section>
 <section className="skin-portal" aria-label="From skin to formula">
  <div className="skin-portal-media"><Image src="/images/skin-time.webp" fill sizes="100vw" alt="Macro skin texture transitioning into the STILL formula"/></div>
- <div className="portal-dark"/>
+ <div className="portal-dark"/><div className="portal-halo" aria-hidden="true"><i/><i/></div>
  <p className="portal-still">STILL.</p>
  <div className="portal-product"><Image src="/images/booster.webp" fill sizes="(max-width:760px) 65vw, 34vw" alt="STILL hydration booster"/></div>
  <div className="portal-copy"><p className="eyebrow">FROM TIME / TO RITUAL</p><h2>Time changes skin.<br/><em>Your ritual shapes the response.</em></h2><p>Less noise. More consistency. A formula becomes useful when it earns a place in your everyday life.</p></div>
