@@ -10,7 +10,8 @@ export function cinematicMotion(gsap:typeof Gsap,ScrollTrigger:typeof ScrollTrig
   .fromTo('.hero-stay',{yPercent:65,clipPath:'inset(0 0 100% 0)'},{yPercent:0,clipPath:'inset(0 0 0% 0)',duration:1.25},.1)
   .fromTo('.hero-you',{yPercent:45,opacity:0,rotate:-5},{yPercent:0,opacity:1,rotate:0,duration:1.35},.45)
   .fromTo('.hero-intro,.hero-lower,.hero-bottom,.age-rail',{opacity:0,y:15},{opacity:1,y:0,stagger:.09,duration:.85},.65)
-  .fromTo('.hero-glint',{xPercent:-140,opacity:0},{xPercent:140,opacity:.55,duration:1.7,ease:'sine.inOut'},.2);
+  .fromTo('.hero-glint',{xPercent:-140,opacity:0},{xPercent:140,opacity:.55,duration:1.7,ease:'sine.inOut'},.2)
+  .to('.hero-glint',{opacity:0,duration:.35},1.9);
  gsap.to('.hero-you',{xPercent:small?5:12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1.2}});
  gsap.to('.journey-progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:root,start:'top top',end:'bottom bottom',scrub:.25}});
  const portal=gsap.timeline({scrollTrigger:{trigger:'.skin-portal',start:'top bottom',end:'bottom 75%',scrub:1.1}});
@@ -54,3 +55,4 @@ export function cinematicMotion(gsap:typeof Gsap,ScrollTrigger:typeof ScrollTrig
  disposers.push(()=>{alive=false});
  return()=>disposers.forEach(dispose=>dispose());
 }
+
