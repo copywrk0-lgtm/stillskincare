@@ -71,3 +71,30 @@ header.nav-dark{color:#191918;background:#f5f3ed18}
 .ingredient-scene-copy h2{font-size:clamp(60px,8vw,130px);line-height:1}.ingredient-scene-copy{width:min(720px,65vw)}
 @media(max-width:760px){.hero{min-height:620px}.ingredient-scene-copy{width:100%}.ingredient-scene-copy h2{font-size:12vw}.ingredient-scene-copy>p:last-child,.product-copy>p{font-size:16px}.product-controls button,.menu-btn{min-width:44px;min-height:44px}}
 @media(prefers-reduced-motion:reduce){.skin-portal{height:auto;min-height:0;padding:70px 6%;display:flex;flex-direction:column;align-items:center;gap:28px}.skin-portal-media,.portal-still{display:none}.portal-product{position:relative;top:auto;left:auto;width:min(72vw,440px);height:440px;transform:none!important}.portal-copy{position:relative;left:auto;right:auto;bottom:auto}.portal-copy h2{font-size:clamp(40px,7vw,90px)}}
+
+/* Product-led ingredient chapters, with a visible static default. */
+.ingredient-scene{isolation:isolate}
+.ingredient-ghost{z-index:-1}
+.ingredient-orb{z-index:-1;opacity:.35}
+.ingredient-scene-copy{width:50%;padding-right:3%}
+.ingredient-scene-copy h2{font-size:clamp(52px,6.7vw,108px)}
+.ingredient-product{position:absolute;right:4%;top:50%;transform:translateY(-50%);width:42%;height:74%;z-index:1;pointer-events:none}
+.ingredient-product-media{position:absolute;inset:0 0 38px;transform:rotate(-9deg);transform-origin:center}
+.ingredient-product[data-kind='mask'] .ingredient-product-media{transform:rotate(8deg)}
+.ingredient-product-media img{object-fit:contain;filter:drop-shadow(0 24px 22px #0003)}
+.ingredient-product-label{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:12px;letter-spacing:.12em}
+@media(max-width:760px){
+ .ingredient-scene{height:auto;min-height:100svh;padding:96px 6% 56px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:28px}
+ .ingredient-product{position:relative;top:auto;right:auto;transform:none;width:100%;height:clamp(270px,42svh,380px);flex:none;order:0}
+ .ingredient-product-media{inset:0 4% 30px}
+ .ingredient-product-label{font-size:12px}
+ .ingredient-scene-copy{width:100%;padding:0;order:1}
+ .ingredient-scene-copy h2{font-size:clamp(38px,12vw,80px);line-height:1.05;margin:20px 0}
+ .ingredient-scene-copy strong{margin-bottom:22px}
+ .ingredient-scene-copy>p:last-child{max-width:100%;font-size:16px}
+ .ingredient-scene-copy .eyebrow{font-size:12px;letter-spacing:.08em}
+ .ingredient-count{top:75px}
+ .ingredient-ghost{top:26%;font-size:32vw}
+ .ingredient-orb{width:72vw;right:8%;top:27%}
+}
+@media(prefers-reduced-motion:reduce){.ingredient-product-media{transform:none!important}.ingredient-scene-copy>*{opacity:1!important;transform:none!important}}
