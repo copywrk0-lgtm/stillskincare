@@ -14,12 +14,6 @@ export function cinematicMotion(gsap:typeof Gsap,ScrollTrigger:typeof ScrollTrig
   .to('.hero-glint',{opacity:0,duration:.35},1.9);
  gsap.to('.hero-you',{xPercent:small?5:12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1.2}});
  gsap.to('.journey-progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:root,start:'top top',end:'bottom bottom',scrub:.25}});
- const portal=gsap.timeline({scrollTrigger:{trigger:'.skin-portal',start:'top bottom',end:'bottom 75%',scrub:1.1}});
- portal.fromTo('.skin-portal-media',{scale:1.35,borderRadius:'0%'},{scale:small?.78:.68,borderRadius:'48%',duration:1},0)
-  .fromTo('.portal-halo',{scale:.45,opacity:0,rotate:-35},{scale:1,opacity:.7,rotate:60,duration:1.1},.2)
-  .fromTo('.portal-product',{scale:.18,opacity:0,rotation:-28,y:90},{scale:1,opacity:1,rotation:8,y:0,duration:.9},.35)
-  .fromTo('.portal-still',{y:80,opacity:.04},{y:-45,opacity:.14,duration:1.2},0)
-  .fromTo('.portal-copy',{y:45,opacity:0},{y:0,opacity:1,duration:.4},1.05);
  gsap.to('.time-scan',{scale:2.8,opacity:0,ease:'none',scrollTrigger:{trigger:'.changes',start:'top top',end:'+=100%',scrub:1}});
  gsap.fromTo('.skin-diagram',{y:small?12:40,rotateY:-12},{y:0,rotateY:8,ease:'none',scrollTrigger:{trigger:'.science',start:'top 75%',end:'bottom 15%',scrub:1}});
  gsap.utils.toArray<HTMLElement>('.ingredient-scene').forEach((scene,i)=>{

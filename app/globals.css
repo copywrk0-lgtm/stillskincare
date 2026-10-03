@@ -98,3 +98,18 @@ header.nav-dark{color:#191918;background:#f5f3ed18}
  .ingredient-orb{width:72vw;right:8%;top:27%}
 }
 @media(prefers-reduced-motion:reduce){.ingredient-product-media{transform:none!important}.ingredient-scene-copy>*{opacity:1!important;transform:none!important}}
+
+/* Unique imagery: skin study once, ingredient art once, products in collection only. */
+.aged-portrait{clip-path:circle(var(--ageReveal,0%) at 50% 48%)}
+.skin-comparison{position:absolute;right:5.5%;bottom:135px;width:min(310px,35%);z-index:3}
+.skin-comparison label{display:flex;align-items:center;justify-content:space-between;font-size:14px;margin-bottom:12px}
+.skin-comparison input{width:100%;accent-color:var(--orange);cursor:ew-resize;min-height:30px}
+.skin-comparison button{font-size:12px;border-bottom:1px solid currentColor;padding:5px 0}
+.ingredient-art .ingredient-product-media{inset:0 0 38px;transform:rotate(-3deg);overflow:hidden;border-radius:45% 45% 8% 8%}
+.ingredient-art .ingredient-product-media img{object-fit:cover;filter:none}
+.ingredient-art[data-kind='liquid'] .ingredient-product-media{border-radius:8% 8% 45% 45%}
+.ingredient-art[data-kind='cream'] .ingredient-product-media{border-radius:45% 8% 45% 8%}
+.ingredient-orb{display:none}
+.results-heading{margin-bottom:25px}
+@media(max-width:760px){.skin-comparison{left:6%;right:6%;width:auto;bottom:115px}.time-copy{bottom:36%}.ingredient-art .ingredient-product-media{inset:0 3% 30px}.ingredient-product-media img{object-position:center}.ingredient-product{height:clamp(270px,42svh,380px)}}
+@media(prefers-reduced-motion:reduce){.ingredient-art .ingredient-product-media{transform:none!important}}
