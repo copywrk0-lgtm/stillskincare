@@ -72,12 +72,12 @@ return <div ref={root}>
 <section className="skin-portal" aria-label="From skin to formula">
  <div className="skin-portal-media"><Image src="/images/skin-time.webp" fill sizes="100vw" alt="Macro skin texture transitioning into the STILL formula"/></div>
  <div className="portal-dark"/><div className="portal-halo" aria-hidden="true"><i/><i/></div>
- <p className="portal-still">STILL.</p>
+ <p className="portal-still" aria-hidden="true">STILL.</p>
  <div className="portal-product"><Image src="/images/booster.webp" fill sizes="(max-width:760px) 65vw, 34vw" alt="STILL hydration booster"/></div>
  <div className="portal-copy"><p className="eyebrow">FROM TIME / TO RITUAL</p><h2>Time changes skin.<br/><em>Your ritual shapes the response.</em></h2><p>Less noise. More consistency. A formula becomes useful when it earns a place in your everyday life.</p></div>
  </section>
  <section className="ingredient-journey" aria-label="Inside the formula">
- {[['RETINAL','CELL TURNOVER','A considered active for routines focused on visible signs of time.'],['PEPTIDES','STRUCTURE','Supportive skincare ingredients, framed without miracle language.'],['CERAMIDES','BARRIER','Lipids used in moisturising care to support the skin barrier.']].map((item,i)=><article className="ingredient-scene" key={item[0]}><span className="ingredient-count">0{i+1}</span><span className="ingredient-ghost">{item[0]}</span><div className="ingredient-scene-copy"><p className="eyebrow">INSIDE THE FORMULA</p><h2>{item[0]}</h2><strong>{item[1]} <span>↑</span></strong><p>{item[2]}</p></div><div className="ingredient-orb"><i/><i/><i/></div></article>)}
+ {[['RETINAL','CELL TURNOVER','A considered active for routines focused on visible signs of time.'],['PEPTIDES','STRUCTURE','Supportive skincare ingredients, framed without miracle language.'],['CERAMIDES','BARRIER','Lipids used in moisturising care to support the skin barrier.']].map((item,i)=><article className="ingredient-scene" key={item[0]}><span className="ingredient-count">0{i+1}</span><span className="ingredient-ghost" aria-hidden="true">{item[0]}</span><div className="ingredient-scene-copy"><p className="eyebrow">INSIDE THE FORMULA</p><h2>{item[0]}</h2><strong>{item[1]} <span>↑</span></strong><p>{item[2]}</p></div><div className="ingredient-orb" aria-hidden="true"><i/><i/><i/></div></article>)}
  </section>
 <section className="treatment section" id="ritual">
  <div className="section-kicker"><p className="eyebrow">04 / THE COLLECTION</p><span>LESS NOISE. MORE RITUAL.</span></div>
