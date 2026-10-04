@@ -1,1 +1,18 @@
-{"identity":"VELA fictional portfolio concept","images":"Generated editorial illustrations, not patients or results","removed":"All LINII clinic, doctor and equipment photography"}
+{
+  "photographer": "Cheyenne Doig",
+  "license": "Unsplash License",
+  "license_url": "https://unsplash.com/license",
+  "images": [
+    {
+      "file": "portrait.webp",
+      "source": "https://unsplash.com/photos/0vpZpEQ4FFM",
+      "image": "https://images.unsplash.com/photo-1609357912333-27872db33d5c?auto=format&fit=crop&w=1800&q=85"
+    },
+    {
+      "file": "care.webp",
+      "source": "https://unsplash.com/photos/qTBDxXIoCL4",
+      "image": "https://images.unsplash.com/photo-1609175215545-3b41b17d9e1e?auto=format&fit=crop&w=1400&q=85"
+    }
+  ],
+  "usage": "Real stock skincare photographs, not clinic patients, practitioners or results"
+}

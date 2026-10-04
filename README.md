@@ -1,7 +1,9 @@
-# VELA — Skin & Aesthetics
+# VELA clinic concept — simplified editorial direction
 
-Original English clinic portfolio concept by Copywrk, reworked from the cinematic skin journey. VELA is a fictional identity, not an operating clinic. No LINII branding, doctors, branch details or photographs are used.
+English portfolio concept; the actual prospect has not yet been named. Practitioner, location and treatment information must be verified and substituted once supplied. No invented clinical credentials or outcomes.
 
-Next.js, GSAP ScrollTrigger and Lenis. Three pinned chapters, static reduced-motion fallback, keyboard-accessible consultation brief, swipeable treatment rituals and a local-only enquiry preparation form. No personal data is transmitted and no appointment is confirmed. Generated editorial imagery illustrates the concept; no clinical results or testimonials are fabricated.
+Real stock photography by Cheyenne Doig, Unsplash; source URLs and license recorded in ASSET-SOURCES.json. Models are not represented as clinic patients. No generated images used in the visible experience.
 
-Build: npm run build. Static export: out. Vercel preview branch: vela-concept. Production STILL remains separate.
+Only two motion effects: slow hero-image scale and once-only section entrance. Native scrolling; no pins, Lenis, orbit circles, ghost wordmarks, portal or italic serif fonts. Reduced motion disables both effects. High-contrast fixed navigation, keyboard-accessible mobile menu and quiz, sequential section numbers 01–08.
+
+Consultation questions and enquiry form prepare a local brief only. No data is sent and no appointment is booked. Static Next.js export on Vercel, branch vela-concept.
