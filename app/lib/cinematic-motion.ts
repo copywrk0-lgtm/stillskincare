@@ -18,12 +18,9 @@ export function cinematicMotion(gsap:typeof Gsap,ScrollTrigger:typeof ScrollTrig
  gsap.fromTo('.skin-diagram',{y:small?12:40,rotateY:-12},{y:0,rotateY:8,ease:'none',scrollTrigger:{trigger:'.science',start:'top 75%',end:'bottom 15%',scrub:1}});
  gsap.utils.toArray<HTMLElement>('.ingredient-scene').forEach((scene,i)=>{
   const st={trigger:scene,start:'top bottom',end:'bottom top',scrub:1};
-  gsap.fromTo(scene.querySelector('.ingredient-ghost'),{xPercent:i%2?-18:18,opacity:.04},{xPercent:i%2?5:-5,opacity:.16,ease:'none',scrollTrigger:st});
-  gsap.fromTo(scene.querySelector('.ingredient-orb'),{rotation:-40,scale:.72},{rotation:i%2?-210:210,scale:1.06,ease:'none',scrollTrigger:st});
   gsap.fromTo(scene.querySelector('.ingredient-product-media'),{y:small?14:35,rotation:i===2?10:-12,scale:.94},{y:small?-14:-35,rotation:i===2?-4:5,scale:1.03,ease:'none',scrollTrigger:st});
   gsap.fromTo(scene.querySelectorAll('.ingredient-scene-copy>*'),{y:40,opacity:0},{y:0,opacity:1,stagger:.1,duration:.85,ease:'power3.out',scrollTrigger:{trigger:scene,start:'top 60%'}});
  });
- gsap.fromTo('.orbit-ring',{rotation:-20,scale:.8},{rotation:35,scale:1,ease:'none',stagger:.1,scrollTrigger:{trigger:'.treatment',start:'top bottom',end:'bottom top',scrub:1}});
  gsap.utils.toArray<HTMLElement>('.manifesto-bottom,.results-heading h2,.reflections,.quiz-section h2,.faq-item,.cta h2,.cta-grid').forEach(el=>{
   gsap.fromTo(el,{y:30,opacity:0},{y:0,opacity:1,duration:.85,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 93%'}});
  });
