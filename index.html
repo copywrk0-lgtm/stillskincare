@@ -4,16 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#13100f">
-  <meta name="robots" content="noindex,nofollow">
+  <meta name="robots" content="noindex,follow">
   <meta name="description" content="STILL — a cinematic skincare exploration. A speculative brand experience by Copywrk.">
   <meta property="og:title" content="STILL — Stay the age you're in.">
   <meta property="og:description" content="A sensorial journey through skin, formulation and ritual. Independent portfolio concept.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="/images/social-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/images/social-preview.jpg">
+  <meta name="color-scheme" content="dark light">
   <title>STILL — Stay the age you're in.</title>
-  <link rel="preload" as="image" href="assets/portrait-hero.webp">
+  <link rel="preload" as="image" href="assets/portrait-hero.webp" fetchpriority="high">
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="jar-engine.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -50,7 +56,7 @@
           <p class="eyebrow"><span class="eyebrow-line"></span>THE STILL PHILOSOPHY <span class="eyebrow-number">/ 001</span></p>
           <h1>Stay the age<br><em>you're in.</em></h1>
           <p class="hero-intro">Because the most beautiful thing about<br>time is being here for it.</p>
-          <a class="round-link hero-cta" href="#science"><span>ENTER THE EXPERIENCE</span><span class="link-circle">↗</span></a>
+          <a class="round-link hero-cta" href="#transition"><span>ENTER THE EXPERIENCE</span><span class="link-circle">↗</span></a>
         </div>
         <div class="hero-word hero-word-one" aria-hidden="true">THE PRESENT</div>
         <div class="hero-word hero-word-two" aria-hidden="true">IS YOURS.</div>
@@ -95,6 +101,24 @@
         <div class="science-points reveal"><div><span>01 /</span><strong>THE BARRIER</strong><small>Keeping moisture in.</small></div><div><span>02 /</span><strong>THE FEELING</strong><small>Comfort, not perfection.</small></div><div><span>03 /</span><strong>THE RITUAL</strong><small>Care that meets you here.</small></div></div>
       </div>
       <p class="science-bottom">A CLOSER LOOK AT WHAT MAKES US, US. <span>↓ CONTINUE THE JOURNEY</span></p>
+    </section>
+
+
+    <section class="deep-bridge" id="journey" data-header="dark" aria-label="A journey from skin texture into formulation">
+      <div class="deep-bridge-sticky">
+        <div class="deep-image" aria-hidden="true"></div>
+        <div class="deep-vignette" aria-hidden="true"></div>
+        <div class="deep-ring deep-ring-one" aria-hidden="true"></div><div class="deep-ring deep-ring-two" aria-hidden="true"></div>
+        <span class="deep-kicker">INTERLUDE / 02 <span class="deep-kicker-line"></span> CLOSER STILL</span>
+        <div class="deep-center">
+          <span class="deep-coordinate">THE SPACE BETWEEN SKIN & FORMULA</span>
+          <h2>Feel the<br><em>difference</em><span class="accent-mark">.</span></h2>
+          <p>From a drop of moisture to a moment of care.<br>Sometimes the smallest things deserve a closer look.</p>
+          <a href="#formula" class="deep-continue">ENTER THE FORMULA <span>↗</span></a>
+        </div>
+        <span class="deep-bot">STILL / AN EXPLORATION OF TEXTURE</span>
+        <span class="deep-frame-label">02 / SENSORY STUDY</span>
+      </div>
     </section>
 
     <section class="formula" id="formula" data-header="light">

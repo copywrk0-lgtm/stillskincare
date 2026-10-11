@@ -28,3 +28,32 @@
 @media(prefers-reduced-motion:reduce){.hero-runway{height:100svh}.hero-stage{position:relative}.jar-zone{transform:translateY(-43%)!important}@media(max-width:800px){.jar-zone{transform:translateY(-28%)!important}}@media(max-width:550px){.jar-zone{transform:translateY(-23%)!important}}}
 
 .jar-canvas{display:none;position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;filter:drop-shadow(25px 42px 30px rgba(0,0,0,.55))}.jar-zone.gl .jar-canvas{display:block}.jar-zone.gl .product-model{display:none}
+
+
+/* V3 — seamless macro-to-formulation interlude. Animation is native-scroll-driven. */
+.deep-bridge{height:205svh;min-height:980px;position:relative;background:#090707;color:#eee0d1;isolation:isolate;--depth:0}
+.deep-bridge-sticky{position:sticky;top:0;height:100svh;min-height:580px;overflow:hidden;isolation:isolate;display:grid;place-items:center}
+.deep-bridge-sticky:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(10,7,7,.67),rgba(10,7,7,.09) 65%,rgba(10,7,7,.38)),linear-gradient(0deg,rgba(9,6,6,.66),transparent 40%,rgba(9,6,6,.54))}
+.deep-image{position:absolute;inset:-12%;background:url('assets/liquid-macro.webp') 53% 48% /cover no-repeat;filter:brightness(.55) contrast(1.18) saturate(.76);transform:scale(calc(1.64 - var(--depth)*.53));will-change:transform;opacity:calc(.33 + var(--depth)*.62);clip-path:circle(calc(13% + var(--depth)*116%) at 56% 49%)}
+.deep-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 56% 49%,transparent 8%,rgba(7,5,5,.14) 42%,rgba(7,5,5,.8) 100%)}
+.deep-ring{position:absolute;z-index:2;border:1px solid rgba(251,185,139,.35);width:44vmin;height:44vmin;border-radius:50%;left:calc(56% - 22vmin);top:calc(49% - 22vmin);transform:scale(calc(.5 + var(--depth)*3.5));opacity:calc(.65 - var(--depth)*.61);pointer-events:none;will-change:transform}
+.deep-ring-two{border-color:rgba(255,245,221,.14);transform:scale(calc(.28 + var(--depth)*3));transition:none}
+.deep-kicker,.deep-bot,.deep-frame-label{position:absolute;z-index:4;font-size:9px;letter-spacing:.2em;color:#d6bbaa}
+.deep-kicker{left:7vw;top:calc(var(--header-h) + 38px);display:flex;align-items:center;gap:16px}.deep-kicker-line{width:32px;height:1px;background:var(--accent)}
+.deep-bot{left:7vw;bottom:37px}.deep-frame-label{right:7vw;bottom:37px}
+.deep-center{z-index:3;position:relative;text-align:center;padding:0 5vw;transform:translateY(calc(54px - var(--depth)*54px));opacity:calc(.45 + var(--depth)*.55);max-width:1200px}
+.deep-coordinate{font-size:10px;letter-spacing:.3em;color:#ecc6af}
+.deep-center h2{font-family:var(--serif);font-size:clamp(83px,12vw,172px);font-weight:400;line-height:.77;letter-spacing:-.075em;margin:37px auto 35px;text-wrap:balance;text-shadow:0 18px 40px rgba(6,4,3,.25)}
+.deep-center h2 em{margin-left:9vw}.accent-mark{color:var(--accent)}
+.deep-center p{font-size:clamp(12px,1.15vw,16px);line-height:1.8;color:#efe0d3;max-width:480px;margin:auto}
+.deep-continue{display:inline-flex;gap:30px;align-items:center;border-bottom:1px solid rgba(246,224,210,.64);padding:24px 2px 10px;margin-top:25px;font-size:10px;letter-spacing:.22em;transition:color .3s}
+.deep-continue:hover{color:#f7a877}.deep-continue span{font-size:20px}
+@media(max-width:800px){.deep-bridge{height:176svh;min-height:900px}.deep-image{background-position:60% center}.deep-center h2{font-size:clamp(75px,12vw,115px)}.deep-center h2 em{margin-left:0}}
+@media(max-width:550px){.deep-bridge{height:165svh;min-height:810px}.deep-bridge-sticky{min-height:560px}.deep-kicker,.deep-bot,.deep-frame-label{font-size:7px}.deep-kicker{top:85px;left:7vw}.deep-center{padding:0 7vw}.deep-center h2{font-size:17vw;margin:25px auto 25px}.deep-center p{font-size:12px}.deep-coordinate{font-size:8px;letter-spacing:.17em}.deep-frame-label{display:none}.deep-image{background-position:58% center}.deep-continue{font-size:8px;gap:15px}.deep-bot{bottom:25px}}
+@media(prefers-reduced-motion:reduce){.deep-bridge{height:100svh;min-height:560px}.deep-bridge-sticky{position:relative}.deep-image{clip-path:none;opacity:.68;transform:scale(1.1)}.deep-ring{display:none}.deep-center{opacity:1;transform:none}}
+/* Visual polish — clean focus affordances, progressive detail, and touch-safe scene controls. */
+:focus-visible{outline:2px solid #d08055;outline-offset:5px}
+.jar-zone{contain:layout style}.jar-zone .jar-canvas{contain:strict}
+.ingredient-stage:before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 40% 60% at 58% 42%,rgba(247,218,185,.23),transparent 72%);pointer-events:none}
+.collection-stage{isolation:isolate}.collection-image{filter:drop-shadow(0 20px 30px rgba(42,29,21,.12))}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){.ingredient-tab:hover .ing-arrow{transform:translate(3px,-3px)}.product-tab:hover{color:var(--accent)}}

@@ -25,65 +25,8 @@
   const runway=$('#top'),jarZone=$('#jar-zone'),model=$('#product-model'),heroCopy=$('#hero-copy'),chapter=$('#hero-chapter');
   const heroWords=[$('.hero-word-one'),$('.hero-word-two')];
   let manualSpin=0,dragging=false,dragStartX=0,dragSpin=0,latestProgress=0,atRest=0;
-  // Hero upgrade: real WebGL jar (Three.js). Falls back to the CSS jar if Three.js or WebGL is unavailable.
-  function initJar(){
-    const cv=$('#jar-canvas');if(!window.THREE||!cv)return;
-    let renderer;try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true})}catch(e){return}
-    renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
-    const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(30,1,.1,50);
-    // Procedural studio environment so the metal and glaze have something to reflect
-    const ec=document.createElement('canvas');ec.width=1024;ec.height=512;const ex=ec.getContext('2d');
-    const eg=ex.createLinearGradient(0,0,0,512);eg.addColorStop(0,'#3a2a22');eg.addColorStop(.55,'#120e0c');eg.addColorStop(1,'#070605');ex.fillStyle=eg;ex.fillRect(0,0,1024,512);
-    [[110,110,90,260,'#ffe2c4'],[470,80,60,300,'#fff1e0'],[760,140,110,220,'#e8a06c'],[950,90,50,280,'#ffffff']].forEach(b=>{ex.fillStyle=b[4];ex.fillRect(b[0],b[1],b[2],b[3])});
-    const et=new THREE.CanvasTexture(ec);et.mapping=THREE.EquirectangularReflectionMapping;et.encoding=THREE.sRGBEncoding;
-    const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromEquirectangular(et).texture;et.dispose();pm.dispose();
-    scene.add(new THREE.AmbientLight(0xffffff,.15));
-    const key=new THREE.DirectionalLight(0xffd9b8,1.1);key.position.set(3,4,5);scene.add(key);
-    const rimL=new THREE.PointLight(0xd08055,1.4);rimL.position.set(-4,1,-3);scene.add(rimL);
-    // Lathe profile: a cylinder with rounded top and bottom edges
-    function profile(r,h,rad){const p=[new THREE.Vector2(0,0),new THREE.Vector2(r-rad,0)],n=10;
-      for(let i=1;i<=n;i++){const a=i/n*Math.PI/2;p.push(new THREE.Vector2(r-rad+Math.sin(a)*rad,rad-Math.cos(a)*rad))}
-      for(let i=1;i<=n;i++){const a=i/n*Math.PI/2;p.push(new THREE.Vector2(r-rad+Math.cos(a)*rad,h-rad+Math.sin(a)*rad))}
-      p.push(new THREE.Vector2(0,h));return p}
-    const jar=new THREE.Group();jar.position.y=-1.06;scene.add(jar);
-    const bodyMat=new THREE.MeshPhysicalMaterial({color:0x1b1411,metalness:.35,roughness:.3,clearcoat:1,clearcoatRoughness:.18});
-    const lidMat=new THREE.MeshStandardMaterial({color:0x4a3528,metalness:1,roughness:.3});
-    const body=new THREE.Mesh(new THREE.LatheGeometry(profile(1,1.5,.14),96),bodyMat);jar.add(body);
-    const cream=new THREE.Mesh(new THREE.SphereGeometry(.88,48,16,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:0xe3cdb5,roughness:.4,metalness:0,envMapIntensity:.6}));
-    cream.scale.y=.14;cream.position.y=1.5;jar.add(cream);
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(1,.02,12,96),new THREE.MeshStandardMaterial({color:0xd08055,metalness:1,roughness:.25}));ring.rotation.x=Math.PI/2;ring.position.y=1.5;jar.add(ring);
-    const lid=new THREE.Mesh(new THREE.LatheGeometry(profile(1.04,.62,.12),96),lidMat);lid.position.y=1.52;jar.add(lid);
-    // Label drawn on a 2D canvas and wrapped round the front of the body
-    const lc=document.createElement('canvas');lc.width=1400;lc.height=490;const g=lc.getContext('2d');
-    const lt=new THREE.CanvasTexture(lc);lt.anisotropy=8;lt.encoding=THREE.sRGBEncoding;
-    const serif='"Bodoni MT","Didot","Times New Roman",Georgia,serif',sans='"Helvetica Neue",Arial,sans-serif';
-    function spaced(t,cx,y,sp){const w=[...t].map(c=>g.measureText(c).width),tot=w.reduce((a,b)=>a+b,0)+sp*(t.length-1);let x=cx-tot/2;[...t].forEach((c,i)=>{g.fillText(c,x,y);x+=w[i]+sp})}
-    function drawLabel(){g.clearRect(0,0,1400,490);g.fillStyle='#e6d4bf';g.textAlign='left';g.textBaseline='middle';
-      g.font='190px '+serif;spaced('STILL',700,150,28);
-      g.fillStyle='rgba(230,212,191,.6)';g.fillRect(550,255,300,2);
-      g.fillStyle='#e6d4bf';g.font='40px '+sans;spaced('RENEWING MASK',700,320,12);
-      g.font='17px '+sans;spaced('HYDRATE  /  RESTORE  /  PROTECT',700,385,6);
-      g.globalAlpha=.55;g.font='15px '+sans;spaced('50 ML / CONCEPT',700,440,6);g.globalAlpha=1;lt.needsUpdate=true}
-    drawLabel();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawLabel);
-    const L=2;const label=new THREE.Mesh(new THREE.CylinderGeometry(1.004,1.004,.7,64,1,true,-L/2,L),new THREE.MeshBasicMaterial({map:lt,transparent:true,depthWrite:false}));label.position.y=.78;jar.add(label);
-    // Scroll-driven state, eased toward its target each frame
-    const st={rot:-19,tilt:5,lift:0},tg={rot:-19,tilt:5,lift:0};let visible=true,raf=0;
-    window.stillJar={set(p,spin){tg.rot=-19+p*295+spin;tg.tilt=5+p*10;const k=clamp((p-.6)/.3);tg.lift=k*k*(3-2*k);wake()}};
-    function size(){const w=jarZone.clientWidth,h=jarZone.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.set(0,0,9*Math.max(1,.6/camera.aspect));camera.updateProjectionMatrix();wake()}
-    function frame(t){raf=0;if(!visible)return;const e=reduceMotion?1:.12;
-      st.rot+=(tg.rot-st.rot)*e;st.tilt+=(tg.tilt-st.tilt)*e;st.lift+=(tg.lift-st.lift)*e;
-      jar.rotation.set(st.tilt*Math.PI/180,st.rot*Math.PI/180,0);
-      lid.position.y=1.52+st.lift*.95;lid.rotation.z=st.lift*.12;
-      jar.position.y=-1.06+(reduceMotion?0:Math.sin(t/1400)*.03);
-      rimL.position.x=-4+Math.sin(st.rot*Math.PI/180)*1.5;
-      renderer.render(scene,camera);
-      if(!reduceMotion||Math.abs(tg.rot-st.rot)>.05||Math.abs(tg.lift-st.lift)>.001)wake()}
-    function wake(){if(!raf&&visible)raf=requestAnimationFrame(frame)}
-    new IntersectionObserver(en=>{visible=en[0].isIntersecting;if(visible)wake()}).observe(runway);
-    if(window.ResizeObserver)new ResizeObserver(size).observe(jarZone);addEventListener('resize',size);
-    jarZone.classList.add('gl');size();
-  }
-  initJar();
+  // Locally bundled WebGL jar initializes separately in jar-engine.js.
+  // CSS jar remains visible as a reliable fallback.
 
   function updateModel(p){window.stillJar&&window.stillJar.set(p,manualSpin);const current=-19+(p*295)+manualSpin;model.style.setProperty('--spin',`${current}deg`);model.style.setProperty('--tilt',`${5+p*10}deg`);}
   jarZone.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;dragging=true;dragStartX=e.clientX;dragSpin=manualSpin;jarZone.classList.add('dragging');jarZone.setPointerCapture?.(e.pointerId)});
@@ -112,6 +55,8 @@
     chapter.textContent=p<.36?'01 / THE MOMENT':p<.67?'02 / THE PRESENT':'03 / YOUR RITUAL';
     updateModel(p);
     const scienceImg=$('.science-image');const scienceRect=$('#science').getBoundingClientRect();let scienceP=clamp(1-(scienceRect.top+scienceRect.height)/(innerHeight+scienceRect.height));scienceImg.style.transform=`scale(${1.1+scienceP*.13}) translateY(${-scienceP*18}px)`;
+    // The liquid lens grows as the reader passes between the skin and formula chapters.
+    const bridge=$('#journey');if(bridge){const br=bridge.getBoundingClientRect();const d=clamp(-br.top/Math.max(1,br.height-innerHeight));bridge.style.setProperty('--depth',d.toFixed(4));}
     const ritualImg=$('.ritual-image');const rr=$('#ritual').getBoundingClientRect();const rp=clamp((innerHeight-rr.top)/(innerHeight+rr.height));ritualImg.style.transform=`scale(1.16) translateY(${(rp-.5)*-35}px)`;
   }
   function requestScroll(){if(!frameRequested){frameRequested=true;requestAnimationFrame(scrollFrame)}}
@@ -137,25 +82,69 @@
     mask:{type:'THE SLOW-DOWN RITUAL / 50 ML',title:'The Renewing<br><em>Mask.</em>',copy:'A comforting, hydration-focused concept mask. Made for the moments when your skin—and your day—need a little softness.',benefits:['Hyaluronic acid','Panthenol','Glycerin'],image:'assets/mask-product.webp',alt:'STILL Renewing Mask product illustration'},
     booster:{type:'THE DAILY RESET / 30 ML',title:'The Hydration<br><em>Booster.</em>',copy:'A lightweight, layerable hydration concept for skin that feels dry or tight. A little reminder to start with what you need.',benefits:['Hyaluronic acid','Glycerin','Daily hydration'],image:'assets/hydration-booster.svg',alt:'STILL Hydration Booster illustrative bottle'}
   };
-  let selectedProduct='mask';
-  $$('.product-tab').forEach(btn=>btn.addEventListener('click',()=>{const key=btn.dataset.product;selectedProduct=key;$$('.product-tab').forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-selected',String(b===btn))});const info=productContent[key];const image=$('#collection-image');image.classList.add('fading');setTimeout(()=>{image.src=info.image;image.alt=info.alt;$('#collection-type').textContent=info.type;$('#collection-title').innerHTML=info.title;$('#collection-copy').textContent=info.copy;$('#collection-benefits').replaceChildren(...info.benefits.map(name=>{let li=document.createElement('li');li.textContent=name;return li}));image.classList.remove('fading')},230)}));
+  let selectedProduct='mask',productTimer=0;
+  function setProduct(key,{instant=false}={}){
+    if(!productContent[key])return;
+    selectedProduct=key;
+    $$('.product-tab').forEach(b=>{const current=b.dataset.product===key;b.classList.toggle('active',current);b.setAttribute('aria-selected',String(current));b.tabIndex=current?0:-1});
+    const info=productContent[key],image=$('#collection-image');
+    clearTimeout(productTimer);if(!instant)image.classList.add('fading');
+    productTimer=setTimeout(()=>{
+      image.src=info.image;image.alt=info.alt;$('#collection-type').textContent=info.type;
+      $('#collection-title').innerHTML=info.title;$('#collection-copy').textContent=info.copy;
+      $('#collection-benefits').replaceChildren(...info.benefits.map(name=>{const li=document.createElement('li');li.textContent=name;return li}));
+      image.classList.remove('fading');
+    },instant||reduceMotion?0:190);
+}
+  const productTabs=$$('.product-tab');
+  productTabs.forEach((btn,i)=>{btn.tabIndex=i===0?0:-1;
+    btn.addEventListener('click',()=>setProduct(btn.dataset.product));
+    btn.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(e.key)){
+      e.preventDefault();const j=e.key==='Home'?0:e.key==='End'?productTabs.length-1:(i+(e.key==='ArrowRight'||e.key==='ArrowDown'?1:-1)+productTabs.length)%productTabs.length;
+      productTabs[j].focus();setProduct(productTabs[j].dataset.product);
+    }});
+  });
   $('#collection-cta').addEventListener('click',()=>{document.getElementById('consult').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'})});
 
   const questions=[
-    {title:'What season of life are you in?',label:'QUESTION ONE / ALL AGES WELCOME',choices:['18–24','25–34','35–44','45+']},
-    {title:'What does your skin need most today?',label:'QUESTION TWO / THE PRIORITY',choices:['Hydration','Comfort','Even-looking tone','A simpler routine']},
-    {title:'How does your skin usually feel?',label:'QUESTION THREE / SKIN FEEL',choices:['Dry or tight','Balanced','Oily or shiny','Easily irritated']}
+    {title:'What does your skin need most today?',label:'QUESTION ONE / THE PRIORITY',choices:['Hydration','Comfort','Even-looking tone','A simpler routine']},
+    {title:'How does your skin usually feel?',label:'QUESTION TWO / SKIN FEEL',choices:['Dry or tight','Balanced','Oily or shiny','Easily irritated']},
+    {title:'What kind of ritual fits your life?',label:'QUESTION THREE / YOUR PACE',choices:['A quick daily step','A few mindful minutes','An occasional slow ritual','I need some guidance']}
   ];
   let qIndex=0,answers=[null,null,null],showResult=false;
   const content=$('#quiz-content'),quizNext=$('#quiz-next'),quizBack=$('#quiz-back');
-  function getRecommendation(){if(answers[2]==='Easily irritated')return {name:'Start with comfort.',copy:'If your skin reacts easily, introduce one product at a time and consult a qualified skin professional about a suitable routine. Patch testing is sensible.',product:'GENTLE GUIDANCE'};if(answers[1]==='Hydration'||answers[2]==='Dry or tight')return{name:'The Hydration Booster.',copy:'Your answers point toward a simple hydration-focused routine. The concept Hydration Booster highlights humectants such as glycerin and hyaluronic acid.',product:'THE DAILY RESET'};return{name:'The Renewing Mask.',copy:'Your answers suggest a calm, pared-back ritual might appeal to you. Our concept Renewing Mask is an occasional moment of comfort, not a substitute for a daily routine.',product:'THE SLOW MOMENT'}}
-  function renderQuiz(){content.innerHTML='';if(showResult){let rec=getRecommendation();$('#quiz-counter').textContent='YOUR STILL';$('#quiz-progress').style.width='100%';content.innerHTML=`<div class="quiz-result"><span class="result-tag">YOUR CONCEPT RITUAL</span><h3>Your skin.<br><em>Your pace.</em></h3><strong>${rec.name}</strong><p>${rec.copy}</p><a href="#collection" id="result-collection">SEE THE COLLECTION ↗</a><p>Illustrative recommendation only. Not a diagnosis or personalised medical advice.</p></div>`;$('#quiz-next').innerHTML='START AGAIN <span>↺</span>';$('#quiz-next').disabled=false;$('#quiz-back').disabled=false;$('#quiz-back').textContent='← REVIEW';$('#result-collection').addEventListener('click',()=>{});return}
+  function getRecommendation(){
+    const [focus,feel,pace]=answers;
+    if(feel==='Easily irritated'||pace==='I need some guidance')return {
+      name:'Comfort before complexity.',copy:'Because you described easily irritated skin or asked for guidance, consider checking your routine with a qualified skin professional before introducing something new. Gentle care and patch testing matter.',product:null,tag:'AN INDIVIDUAL APPROACH'};
+    if(focus==='Hydration'||feel==='Dry or tight'||pace==='A quick daily step')return {
+      name:'The Hydration Booster.',copy:'Your priorities suggest a simple, hydration-first concept. The Hydration Booster illustrates a lightweight daily step featuring hyaluronic acid and glycerin.',product:'booster',tag:'THE DAILY RESET'};
+    if(pace==='An occasional slow ritual'||focus==='Comfort')return {
+      name:'The Renewing Mask.',copy:'Your answers favour a slower moment of self-care. The Renewing Mask is an illustrative occasional hydration ritual, not a replacement for a complete routine.',product:'mask',tag:'THE SLOW MOMENT'};
+    return {name:'A considered daily ritual.',copy:'For a simpler routine or a focus on more even-looking tone, begin with gentle cleansing, moisturiser, and daily sun protection. Our Hydration Booster is one optional concept step, not a claim to treat pigmentation.',product:'booster',tag:'A SIMPLE START'};
+}
+  function renderQuiz(){
+    content.replaceChildren();
+    if(showResult){
+      const rec=getRecommendation();$('#quiz-counter').textContent='YOUR STILL';$('#quiz-progress').style.width='100%';
+      content.innerHTML=`<div class="quiz-result"><span class="result-tag">YOUR CONCEPT RITUAL / ${rec.tag}</span><h3>Your skin.<br><em>Your pace.</em></h3><strong>${rec.name}</strong><p>${rec.copy}</p><a href="#collection" id="result-collection">${rec.product?'EXPLORE YOUR CONCEPT PRODUCT':'EXPLORE THE COLLECTION'} ↗</a><p>Illustrative recommendation only. Not a diagnosis or personalised medical advice.</p></div>`;
+      quizNext.innerHTML='START AGAIN <span>↺</span>';quizNext.disabled=false;quizBack.disabled=false;quizBack.textContent='← REVIEW';
+      $('#result-collection').addEventListener('click',()=>{if(rec.product)setProduct(rec.product,{instant:true})});
+      return;
+    }
     const q=questions[qIndex];$('#quiz-counter').textContent=`0${qIndex+1} / 03`;$('#quiz-progress').style.width=`${(qIndex+1)*33.333}%`;
-    const title=document.createElement('span');title.className='quiz-question-label';title.textContent=q.label;const h=document.createElement('h3');h.textContent=q.title;
+    const title=document.createElement('span');title.className='quiz-question-label';title.textContent=q.label;
+    const h=document.createElement('h3');h.textContent=q.title;
     const grid=document.createElement('div');grid.className='quiz-choices';grid.setAttribute('role','group');grid.setAttribute('aria-label',q.title);
-    q.choices.forEach(choice=>{let b=document.createElement('button');b.className='quiz-choice'+(answers[qIndex]===choice?' selected':'');b.type='button';b.setAttribute('aria-pressed',String(answers[qIndex]===choice));b.innerHTML=`<span aria-hidden="true">${answers[qIndex]===choice?'●':'○'}</span>`;b.prepend(document.createTextNode(choice));b.addEventListener('click',()=>{answers[qIndex]=choice;renderQuiz()});grid.appendChild(b)});
+    q.choices.forEach(choice=>{
+      const b=document.createElement('button');b.className='quiz-choice'+(answers[qIndex]===choice?' selected':'');b.type='button';
+      b.setAttribute('aria-pressed',String(answers[qIndex]===choice));
+      b.append(document.createTextNode(choice));const bullet=document.createElement('span');bullet.setAttribute('aria-hidden','true');bullet.textContent=answers[qIndex]===choice?'●':'○';b.append(bullet);
+      b.addEventListener('click',()=>{answers[qIndex]=choice;renderQuiz()});grid.appendChild(b)
+    });
     content.append(title,h,grid);quizBack.disabled=qIndex===0;quizNext.disabled=!answers[qIndex];quizBack.textContent='← PREVIOUS';quizNext.innerHTML=qIndex===2?'GET YOUR EDIT <span>↗</span>':'NEXT QUESTION <span>↗</span>';
-  }
+}
   quizNext.addEventListener('click',()=>{if(showResult){qIndex=0;answers=[null,null,null];showResult=false}else if(answers[qIndex]){if(qIndex===2)showResult=true;else qIndex++}renderQuiz()});
-  quizBack.addEventListener('click',()=>{if(showResult){showResult=false;qIndex=2}else qIndex=Math.max(0,qIndex-1);renderQuiz()});renderQuiz();
+  quizBack.addEventListener('click',()=>{if(showResult){showResult=false;qIndex=2}else qIndex=Math.max(0,qIndex-1);renderQuiz()});
+  renderQuiz();
 })();
