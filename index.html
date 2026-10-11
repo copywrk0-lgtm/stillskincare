@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#13100f">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="STILL — a cinematic skincare exploration. A speculative brand experience by Copywrk.">
+  <meta property="og:title" content="STILL — Stay the age you're in.">
+  <meta property="og:description" content="A sensorial journey through skin, formulation and ritual. Independent portfolio concept.">
+  <meta property="og:type" content="website">
+  <title>STILL — Stay the age you're in.</title>
+  <link rel="preload" as="image" href="assets/portrait-hero.webp">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="load" id="load" aria-hidden="true"><span class="load-brand">STILL<span class="brand-period">.</span></span><span class="load-rule"></span><span class="load-meta">THE BEAUTY OF BEING HERE</span></div>
+  <div class="progress-rail" aria-hidden="true"><span id="page-progress"></span></div>
+  <a class="skip" href="#story">Skip to content</a>
+  <header class="site-header" id="header">
+    <a class="logo" href="#top" aria-label="STILL home">STILL<span>.</span></a>
+    <span class="header-center">A DIFFERENT WAY TO THINK ABOUT TIME <span class="header-asterisk">✳</span></span>
+    <div class="header-actions">
+      <a class="header-collection" href="#collection">THE COLLECTION <span>↗</span></a>
+      <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-panel"><span class="menu-caption">MENU</span><span class="menu-lines"><i></i><i></i></span></button>
+    </div>
+  </header>
+  <nav class="menu-panel" id="menu-panel" aria-label="Main navigation" aria-hidden="true">
+    <div class="menu-inner">
+      <span class="micro">INDEX / STILL 001—005</span>
+      <a href="#top" data-nav><span>01</span> BEGINNING <b>↗</b></a>
+      <a href="#science" data-nav><span>02</span> THE SKIN <b>↗</b></a>
+      <a href="#formula" data-nav><span>03</span> THE FORMULA <b>↗</b></a>
+      <a href="#collection" data-nav><span>04</span> THE RITUAL <b>↗</b></a>
+      <a href="#consult" data-nav><span>05</span> FIND YOUR STILL <b>↗</b></a>
+      <div class="menu-foot"><span>INDEPENDENT DESIGN CONCEPT BY COPYWRK</span><a href="mailto:copywrk0@gmail.com">GET IN TOUCH ↗</a></div>
+    </div>
+  </nav>
+
+  <main id="story">
+    <section class="hero-runway" id="top" aria-label="STILL introduction">
+      <div class="hero-stage" id="hero-stage">
+        <div class="hero-portrait" aria-hidden="true"></div>
+        <div class="hero-atmosphere" aria-hidden="true"><div class="atmo atmo-one"></div><div class="atmo atmo-two"></div><div class="hero-halo"></div><div class="hero-halo halo-two"></div></div>
+        <div class="hero-copy" id="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span>THE STILL PHILOSOPHY <span class="eyebrow-number">/ 001</span></p>
+          <h1>Stay the age<br><em>you're in.</em></h1>
+          <p class="hero-intro">Because the most beautiful thing about<br>time is being here for it.</p>
+          <a class="round-link hero-cta" href="#science"><span>ENTER THE EXPERIENCE</span><span class="link-circle">↗</span></a>
+        </div>
+        <div class="hero-word hero-word-one" aria-hidden="true">THE PRESENT</div>
+        <div class="hero-word hero-word-two" aria-hidden="true">IS YOURS.</div>
+        <div class="jar-zone" id="jar-zone" aria-label="Interactive rotating STILL product concept">
+          <div class="jar-orbit orbit-1"></div><div class="jar-orbit orbit-2"></div>
+          <canvas class="jar-canvas" id="jar-canvas" aria-hidden="true"></canvas>
+          <div class="product-model" id="product-model">
+            <div class="jar-reflection"></div>
+            <div class="jar-lid"><div class="lid-rim"></div><div class="lid-high"></div></div>
+            <div class="jar-neck"></div>
+            <div class="jar-body"><div class="jar-highlight"></div><div class="jar-face"><span class="jar-label">STILL</span><span class="jar-sep"></span><span class="jar-sub">RENEWING MASK</span><span class="jar-tiny">HYDRATE&nbsp;&nbsp; / &nbsp;&nbsp; RESTORE&nbsp;&nbsp; / &nbsp;&nbsp; PROTECT</span><span class="jar-size">50 ML / CONCEPT</span></div></div>
+            <div class="jar-bottom"></div>
+          </div>
+          <div class="product-floor"></div>
+          <div class="product-floor-shadow"></div>
+        </div>
+        <div class="hero-side-meta" aria-hidden="true"><span>01</span><span class="vertical-rule"></span><span>04</span></div>
+        <div class="hero-bottom">
+          <div class="scroll-prompt"><span class="scroll-line"></span><span>SCROLL TO MOVE THROUGH TIME</span></div>
+          <div class="hero-product-caption"><span class="small-dot"></span><span>STILL RENEWING MASK<br><small>ILLUSTRATIVE FORMULATION / 50 ML</small></span></div>
+          <button type="button" class="drag-hint" id="drag-hint" aria-label="Rotate product left">↔ <span>DRAG TO EXPLORE</span></button>
+        </div>
+        <div class="hero-chapter" aria-hidden="true"><span id="hero-chapter">01 / THE MOMENT</span></div>
+      </div>
+    </section>
+
+    <section class="statement" id="transition" data-header="dark">
+      <div class="statement-label"><span class="orange-dot"></span> CHAPTER ONE <span>—</span> THE PHILOSOPHY</div>
+      <p class="statement-copy reveal">Time moves.<br><span>Skin changes.</span><br><em>You remain.</em></p>
+      <div class="statement-foot"><span>STILL IS NOT ABOUT STOPPING TIME.</span><span>IT'S ABOUT FEELING GOOD IN YOUR SKIN, AT EVERY STAGE.</span></div>
+      <span class="statement-bg" aria-hidden="true">S</span>
+    </section>
+
+    <section class="science" id="science" data-header="dark">
+      <div class="science-image" aria-hidden="true"></div>
+      <div class="science-shimmer" aria-hidden="true"></div>
+      <div class="science-scanner" id="scanner" aria-hidden="true"><span>SKIN / MAGNIFIED</span></div>
+      <div class="science-content">
+        <p class="eyebrow reveal"><span class="eyebrow-line"></span> 01 / BENEATH THE SURFACE</p>
+        <h2 class="reveal">There's a whole<br>world <em>beneath.</em></h2>
+        <p class="science-description reveal">Your skin is alive with movement. Water, texture, the quiet work of renewal. We begin by looking closer.</p>
+        <div class="science-points reveal"><div><span>01 /</span><strong>THE BARRIER</strong><small>Keeping moisture in.</small></div><div><span>02 /</span><strong>THE FEELING</strong><small>Comfort, not perfection.</small></div><div><span>03 /</span><strong>THE RITUAL</strong><small>Care that meets you here.</small></div></div>
+      </div>
+      <p class="science-bottom">A CLOSER LOOK AT WHAT MAKES US, US. <span>↓ CONTINUE THE JOURNEY</span></p>
+    </section>
+
+    <section class="formula" id="formula" data-header="light">
+      <div class="formula-intro"><p class="eyebrow dark reveal"><span class="eyebrow-line"></span> 02 / THE FORMULA</p><h2 class="reveal">Less noise.<br><em>More intention.</em></h2><p class="reveal">Considered ingredients. A little science. A lot of care. Explore four familiar skincare ingredients featured in the concept formulas.</p></div>
+      <div class="ingredient-experience">
+        <div class="ingredient-picker" role="tablist" aria-label="Explore ingredients">
+          <button type="button" role="tab" id="ing-tab-0" aria-selected="true" aria-controls="ing-panel" class="ingredient-tab active" data-index="0"><span class="ing-number">01</span><span class="ing-name">Hyaluronic<br><em>acid</em></span><span class="ing-arrow">↗</span></button>
+          <button type="button" role="tab" id="ing-tab-1" aria-selected="false" aria-controls="ing-panel" class="ingredient-tab" data-index="1"><span class="ing-number">02</span><span class="ing-name">Glycerin</span><span class="ing-arrow">↗</span></button>
+          <button type="button" role="tab" id="ing-tab-2" aria-selected="false" aria-controls="ing-panel" class="ingredient-tab" data-index="2"><span class="ing-number">03</span><span class="ing-name">Niacinamide</span><span class="ing-arrow">↗</span></button>
+          <button type="button" role="tab" id="ing-tab-3" aria-selected="false" aria-controls="ing-panel" class="ingredient-tab" data-index="3"><span class="ing-number">04</span><span class="ing-name">Panthenol</span><span class="ing-arrow">↗</span></button>
+        </div>
+        <div class="ingredient-stage" role="tabpanel" id="ing-panel" aria-labelledby="ing-tab-0">
+          <div class="ingredient-halo"></div><img id="ingredient-image" src="assets/hyalu-drop.webp" alt="Glossy clear serum droplet" loading="lazy" width="600" height="800"><span class="ingredient-watermark" id="ingredient-watermark">H₂O</span>
+          <div class="ingredient-description"><span id="ingredient-current">01 / 04</span><p id="ingredient-description">Helps skin attract water, leaving it feeling supple, hydrated and comfortable.</p><span class="subtle-note">FEATURED INGREDIENT · NOT FULL INCI</span></div>
+        </div>
+      </div>
+      <div class="formula-footer"><span>CONSIDERED CARE. NO MIRACLE CLAIMS.</span><span class="form-navigation">SELECT AN INGREDIENT TO EXPLORE <span>↗</span></span></div>
+    </section>
+
+    <section class="ritual" id="ritual" data-header="dark">
+      <div class="ritual-image" aria-label="Person enjoying a sensorial skincare mask"></div>
+      <div class="ritual-overlay"></div>
+      <div class="ritual-top"><span>03 / IN THE MOMENT</span><span>YOUR SKIN. YOUR PACE.</span></div>
+      <div class="ritual-content"><p class="eyebrow"><span class="eyebrow-line"></span> AN INVITATION TO SLOW DOWN</p><h2 class="reveal">A moment<br>just <em>for you.</em></h2><p class="reveal">Not another step to perfect. Just a small ritual to come back to yourself.</p><a href="#collection" class="outline-btn">MEET THE RITUAL <span>↗</span></a></div>
+      <div class="ritual-vertical" aria-hidden="true">FEEL THE MOMENT / STILL SKINCARE</div>
+    </section>
+
+    <section class="collection" id="collection" data-header="light">
+      <div class="collection-head"><p class="eyebrow dark"><span class="eyebrow-line"></span> 04 / YOUR STILL RITUAL</p><h2>Care, in its<br><em>own time.</em></h2><span class="collection-index">TWO CONCEPTS / ONE PHILOSOPHY</span></div>
+      <div class="collection-grid">
+        <div class="collection-stage" id="collection-stage"><span class="collection-watermark">STILL</span><div class="collection-glow"></div><img id="collection-image" class="collection-image" src="assets/mask-product.webp" alt="STILL Renewing Mask product illustration" loading="lazy" width="750" height="840"><span class="collection-aside">THE COLLECTION<br>001 / 002</span></div>
+        <div class="collection-detail"><span class="small-title">A CONSIDERED COLLECTION</span><div class="product-switch" role="tablist" aria-label="Choose a STILL product"><button type="button" class="product-tab active" data-product="mask" role="tab" aria-selected="true">01 <span>RENEWING MASK</span></button><button type="button" class="product-tab" data-product="booster" role="tab" aria-selected="false">02 <span>HYDRATION BOOSTER</span></button></div>
+          <div class="product-info" aria-live="polite"><span id="collection-type">THE SLOW-DOWN RITUAL / 50 ML</span><h3 id="collection-title">The Renewing<br><em>Mask.</em></h3><p id="collection-copy">A comforting, hydration-focused concept mask. Made for the moments when your skin—and your day—need a little softness.</p><ul id="collection-benefits"><li>Hyaluronic acid</li><li>Panthenol</li><li>Glycerin</li></ul></div>
+          <button class="collection-cta" id="collection-cta" type="button">EXPLORE THIS RITUAL <span>↗</span></button>
+          <p class="product-disclaimer">ILLUSTRATIVE PRODUCT, PACKAGING AND INGREDIENT STORY. NOT AVAILABLE FOR PURCHASE.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="consult" id="consult" data-header="dark">
+      <div class="consult-orb" aria-hidden="true"></div><div class="consult-orb-small" aria-hidden="true"></div>
+      <div class="consult-heading"><p class="eyebrow"><span class="eyebrow-line"></span> 05 / A LITTLE MORE PERSONAL</p><h2>Find your<br><em>STILL.</em></h2><p>Everyone's skin has a story. Tell us a little about yours and explore a simple concept routine.</p></div>
+      <div class="consult-card" id="consult-card">
+        <div class="quiz-top"><span>THE STILL EDIT</span><span id="quiz-counter">01 / 03</span></div>
+        <div class="quiz-progress"><span id="quiz-progress"></span></div>
+        <div id="quiz-content" class="quiz-content" aria-live="polite"></div>
+        <div class="quiz-buttons"><button class="quiz-back" type="button" id="quiz-back" disabled>← PREVIOUS</button><button class="quiz-next" type="button" id="quiz-next" disabled>NEXT QUESTION <span>↗</span></button></div>
+        <p class="quiz-note">A creative recommendation only, not medical or professional skincare advice. Answers stay on your device.</p>
+      </div>
+    </section>
+
+    <section class="outro" data-header="light"><span class="outro-label">AFTER ALL, TIME ISN'T SOMETHING TO FIGHT.</span><h2>Be here.<br><em>Be STILL.</em></h2><div class="outro-bottom"><p>An exploration of skin, care and the beauty of the present moment.</p><a class="outro-top" href="#top">BACK TO THE BEGINNING <span>↑</span></a></div></section>
+  </main>
+
+  <footer data-header="dark"><div class="footer-top"><a href="#top" class="footer-logo">STILL<span>.</span></a><p>STAY THE AGE YOU'RE IN.</p><a href="mailto:copywrk0@gmail.com?subject=STILL%20Skincare%20Concept">LET'S TALK ABOUT THIS CONCEPT ↗</a></div><div class="footer-bottom"><span>© STILL — INDEPENDENT PORTFOLIO CONCEPT BY <a href="mailto:copywrk0@gmail.com">COPYWRK</a></span><span>NOT A REAL PRODUCT OR OPERATING SKINCARE BRAND. NO PURCHASE OR BOOKING IS AVAILABLE.</span><a href="#top">TOP ↑</a></div></footer>
+</body>
+</html>

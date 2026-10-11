@@ -1,37 +1,29 @@
-# STILL — skincare brand concept
+# STILL — Immersive 2026 concept
 
-Next.js static website with a hydration-led story, two concept products, a four-question quiz and a downloadable consultation summary. This is an independent portfolio concept by Copywrk. Products, sizes and packaging are illustrative; there is no checkout, price list, clinical claim or salon network.
+An interactive, self-contained front-end experience created as a **new exploratory direction** for the Copywrk STILL skincare concept. **No GitHub or Vercel changes were made.**
 
-## Run locally
+## Run it
 
-Use Node.js 22 or newer.
+- Open `index.html` in Chrome, Edge, Safari or Firefox. No Node installation, build or API keys are required. An internet connection is needed only to load Three.js from cdnjs; offline, the CSS jar is shown instead.
+- Alternatively, serve the folder locally with `python -m http.server 8080`, then visit `http://localhost:8080/`.
+- The site is static and can be hosted on any static hosting platform. Point the deployment root at this folder.
 
-```sh
-npm ci
-npm run dev
-```
+## Features
 
-## Validate and build
+- Scroll-directed multi-act hero with interactive drag-to-rotate conceptual product visual (real WebGL jar via Three.js r128 from cdnjs, with the original HTML/CSS 3D jar kept as an automatic fallback). Scroll turns, tilts and finally opens the lid.
+- Animated scene titles and editorial sections; skin scanner responds to pointer movement.
+- Interactive four-ingredient browser, mobile layouts, product selection and a three-question local-only routine quiz.
+- Fully functional menu navigation, reduced-motion CSS, skip-link and keyboard-accessible ingredient tabs.
+- Locally bundled illustrative product imagery cropped from the project moodboard; no third-party media dependencies.
 
-```sh
-npm run typecheck
-npm run build
-```
+## Concept-only limitations
 
-The production static site is generated in `out/`. Deploy with the included Vercel configuration or serve `out/` on a static host. No backend is required. The ZIP includes the rebuilt `out/` directory.
+This is **not a clinical or operating skincare brand**. Concept products, sizes, packaging and suggested routines are illustrative. The quiz does not transmit or store answers and is not medical advice. There is no checkout, price, salon finder, booking or fabricated testimonial. Before using commercially, replace art-direction imagery and claims with properly licensed, verified assets and actual product copy.
 
-## Configuration
+## Attribution
 
-Copy `.env.example` to `.env.local` before building. `NEXT_PUBLIC_SITE_URL` sets the origin for social image URLs. `NEXT_PUBLIC_ALLOW_INDEXING` defaults to `false` for this portfolio concept, while links remain followable. Set it to `true` only when intentionally publishing an indexable site and rebuild. An optional real `NEXT_PUBLIC_WHATSAPP_NUMBER` enables a WhatsApp link; no number is invented if it is absent. The existing contact email is Copywrk’s `copywrk0@gmail.com`.
+Creative direction and site implementation: Copywrk / STILL portfolio concept. Product photographs and illustrations are derived from the previous STILL moodboard provided for this project.
 
-## Content and interactions
+## Original project
 
-Product names, usage context, sample sizes, featured ingredients and quiz suggestions come from the shared `products` array in `app/page.tsx`. Featured ingredients are not full INCI declarations. The booster features hyaluronic acid and glycerin; the mask features hyaluronic acid, panthenol and glycerin.
-
-The quiz keeps answers in memory only. It recommends a concept routine or professional guidance for sensitivity, offers a text download, and links to the selected collection product. Nothing is booked, purchased or submitted. No analytics or marketing cookies are installed by this project.
-
-FAQs use native buttons with expanded state and controlled answer panels. The product carousel supports swipe, arrow keys and buttons. Care notes support arrow keys and buttons. Dialogs support Escape, focus trapping and focus restoration. Footer privacy and terms describe the actual concept flow.
-
-Mobile uses native scrolling. GSAP/Lenis are loaded only on desktop without reduced-motion preference. Motion preferences are respected. The build regenerates responsive WebP variants and the social preview from the supplied originals using Sharp. Variants live alongside the original assets in `public/images/`, served through a static image loader. All below-the-fold images lazy-load into containers that reserve layout space. Open Graph and Twitter share the included 1200 × 630 social preview.
-
-See `VERIFICATION.md` for completed checks and limits. Existing supplied image assets are retained; their commercial-use rights should be reviewed before a real brand launch.
+This ZIP is a standalone visual rebuild, **not an exact clone/patch of the old Next.js codebase**. The existing source repository remains unchanged. To merge into the original Next app, migrate sections into Next components and keep the source project’s image-licensing and noindex requirements.
